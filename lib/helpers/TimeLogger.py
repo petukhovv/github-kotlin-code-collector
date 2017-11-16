@@ -15,8 +15,11 @@ class TimeLogger:
         if prefix is not None:
             output_str = prefix
 
-        for time in times:
-            output_str += '|' + str(round(time, accuracy))
+        if isinstance(times, list):
+            for time in times:
+                output_str += '|' + str(round(time, accuracy))
+        else:
+            output_str += str(round(times, accuracy))
 
         return output_str
 
