@@ -1,7 +1,7 @@
 # github-kotlin-code-collector
 
-Collection of files with Kotlin code from Github (by keywords), and either:
-- their parsing (compiler run) and resulting AST conversion to JSON (and saving AST in JSON format in specified folder);
+Collection of files with Kotlin code from Github (by keywords), and:
+- either their parsing (compiler run) and resulting AST conversion to JSON (and saving AST in JSON format in specified folder);
 - or just saving in .kt file (if --no-compile option is specified).
 
 ### Running example with parsing
