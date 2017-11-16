@@ -3,7 +3,8 @@ import subprocess
 
 from github import Github
 
-from lib.helper.TimeLogger import TimeLogger
+from lib.helpers.TimeLogger import TimeLogger
+from lib.helpers.ContentSaver import ContentSaver
 
 
 class GithubCodeCollector:
@@ -27,20 +28,26 @@ class GithubCodeFilesSet:
 
 
 class GithubCodeFile:
+    folder = 'code'
+
     def __init__(self, code, file_number):
         self.obj = code
         self.number = file_number
         self.filename = None
 
-    def write_file(self, filename, is_measure_time=True):
+    def write_file(self, filename=None, is_measure_time=True):
         self.filename = filename
         if is_measure_time:
             time_logger = TimeLogger()
 
-        f = open(filename, 'w')
         content = self.obj.decoded_content.decode('utf-8')
-        f.write(content)
-        f.close()
+
+        if filename is None:
+            ContentSaver.save(self.folder, self.number, content, ext='kt')
+        else:
+            f = open(filename, 'w')
+            f.write(content)
+            f.close()
 
         if is_measure_time:
             return time_logger.finish()

@@ -22,3 +22,5 @@ class PathHelper:
             file_part = ''
 
         return dirs_part + file_part
+
+

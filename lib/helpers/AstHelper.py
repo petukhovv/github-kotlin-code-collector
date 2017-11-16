@@ -1,8 +1,9 @@
 import os
 import json
 
-from lib.helper.PathHelper import PathHelper
-from lib.helper.TimeLogger import TimeLogger
+from lib.helpers.PathHelper import PathHelper
+from lib.helpers.TimeLogger import TimeLogger
+from lib.helpers.ContentSaver import ContentSaver
 
 
 class AstSeparators:
@@ -69,15 +70,7 @@ class AstHelper:
 
         ast_json = json.dumps(current_nodes)
 
-        path = AstHelper.folder + '/' + PathHelper.calculate(code_file.number) + '.json'
-        basename = os.path.basename(path)
-        dirname = os.path.dirname(path)
-        if not os.path.exists(dirname):
-            os.makedirs(dirname)
-
-        f = open(dirname + '/' + basename, 'w')
-        f.write(ast_json)
-        f.close()
+        ContentSaver.save(AstHelper.folder, code_file.number, ast_json)
 
         if is_measure_time:
             return time_logger.finish()
