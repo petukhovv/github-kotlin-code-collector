@@ -17,10 +17,6 @@ class ContentSaver:
         if not os.path.exists(dirname):
             os.makedirs(dirname)
 
-        f = open(dirname + '/' + basename, 'w')
-        try:
-            f.write(content)
-        except UnicodeEncodeError:
-            print('Unicode encode error! File is skipped.')
-        finally:
-            f.close()
+        f = open(dirname + '/' + basename, 'wb')
+        f.write(content.encode('utf8'))
+        f.close()
