@@ -10,10 +10,10 @@ log_file = 'log.txt'
 
 github = GithubCodeCollector('...')
 
-no_compile = True if '--no-compile' in sys.argv else False
+no_parse = True if '--no-parse' in sys.argv else False
 
 config = {
-    'no_compile': no_compile,
+    'no_parse': no_parse,
     'compiler_path': compiler_path,
     'kt_code_temp_file': kt_code_temp_file,
     'log_file': log_file
