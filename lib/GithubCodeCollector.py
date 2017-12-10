@@ -72,8 +72,18 @@ class GithubCodeFile:
 
         try:
             content = self.obj.decoded_content.decode('utf-8')
-        except GithubException:
-            print('404 error! File is skipped.')
+        except Exception as e:
+            pprint(e)
+            if isinstance(e, RateLimitExceededException):
+                print('File is skipped. Waiting for 1 minute.')
+                with open('rate_limit_exceeded_exceptions.log', 'a') as exceptions_descriptor:
+                    exceptions_descriptor.write(str(filename) + ': ' + str(self.number) + os.linesep)
+                time.sleep(60)
+                return self.write_file(filename, is_measure_time)
+            elif isinstance(e, UnknownObjectException):
+                print('File is skipped because not found.')
+                with open('unknown_object_exceptions.log', 'a') as exceptions_descriptor:
+                    exceptions_descriptor.write(str(filename) + ': ' + str(self.number) + os.linesep)
             return None
 
         if filename is None:
