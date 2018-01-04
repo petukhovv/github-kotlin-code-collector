@@ -84,4 +84,4 @@ class GithubCodeFile:
 
         path = ContentSaver.save(self.directory, self.number, content, ext='kt')
 
-        time_logger.finish('Write ' + path + ' (#' + str(self.number) + ') file')
+        time_logger.finish(task_name='Write ' + path + ' (#' + str(self.number) + ') file')

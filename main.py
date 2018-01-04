@@ -30,4 +30,4 @@ time_logger = TimeLogger()
 # code_search(github, config)
 code_by_repo_search(github, config)
 
-time_logger.finish('Code collection')
+time_logger.finish(task_name='Code collection')
