@@ -16,7 +16,7 @@ Saving directory by default: **./ast**
 ### Running example without parsing (just saving of source code)
 
 ```
-python3 main.py --no-compile
+python3 main.py --no-parse
 ```
 
 Saving directory by default: **./code**
