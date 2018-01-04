@@ -2,7 +2,7 @@
 
 Collection of files with Kotlin code from Github (by keyword).
 
-### Example of use
+## Example of use
 
 ```
 python3 main.py --keyword fun --token my_github_token --directory ./code
