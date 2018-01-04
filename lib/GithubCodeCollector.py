@@ -50,19 +50,18 @@ class GithubCodeFilesSet:
         self.codes = codes
         self.part_number = part_number
 
-    def for_each(self, callback):
+    def for_each(self, callback, config):
         file_number = 1 * self.part_number * self.factor
         for code in self.codes:
-            callback(GithubCodeFile(code, file_number))
+            callback(GithubCodeFile(code, file_number, config))
             file_number += 1
 
 
 class GithubCodeFile:
-    folder = 'code'
-
-    def __init__(self, code, file_number):
+    def __init__(self, code, file_number, config):
         self.obj = code
         self.number = file_number
+        self.directory = config['directory']
 
     def write_file(self):
         time_logger = TimeLogger()
@@ -83,6 +82,6 @@ class GithubCodeFile:
                     exceptions_descriptor.write(self.number + os.linesep)
             return None
 
-        path = ContentSaver.save(self.folder, self.number, content, ext='kt')
+        path = ContentSaver.save(self.directory, self.number, content, ext='kt')
 
         time_logger.finish('Write ' + path + ' (#' + str(self.number) + ') file')
