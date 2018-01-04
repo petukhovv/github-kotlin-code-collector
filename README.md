@@ -2,16 +2,16 @@
 
 Collection of files with Kotlin code from Github (by keyword).
 
-### Running example with parsing
+### Example of use
 
 ```
-python3 main.py --keyword fun --token my_github_token --directory code
+python3 main.py --keyword fun --token my_github_token --directory ./code
 ```
 
 ## Program arguments
 
 - **--keyword (k-)**: keyword for search on Github
-- **--token (t-)**: Github token (you can generate in [personal access token page](https://github.com/settings/tokens) on Github)
+- **--token (t-)**: Github token (you can generate on [personal access token page](https://github.com/settings/tokens))
 - **--directory (d-)**: output folder with Kotlin source code files
 
-For code parsing you can [kotlin-source2ast program](https://github.com/PetukhovVictor/kotlin-source2ast)
+For code parsing you can use [kotlin-source2ast program](https://github.com/PetukhovVictor/kotlin-source2ast)
