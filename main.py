@@ -18,7 +18,7 @@ token = args.token[0]
 
 LOG_FILE = 'log.txt'
 
-github = GithubCodeCollector(token)    # 2fcfcb09697678fd8758a1e5b3a46af82877265d
+github = GithubCodeCollector(token)
 
 config = {
     'log_file': LOG_FILE,
