@@ -1,23 +1,33 @@
-import sys
+import argparse
 
 from lib.GithubCodeCollector import GithubCodeCollector
 from code_search import code_search
 from code_by_repo_search import code_by_repo_search
+from lib.helpers.TimeLogger import TimeLogger
 
-compiler_path = '...'
+parser = argparse.ArgumentParser()
+parser.add_argument('--keyword', '-k', nargs=1, type=str, help='keyword for search on Github')
+parser.add_argument('--token', '-t', nargs=1, type=str, help='Github token')
+
 kt_code_temp_file = 'code.kt'
-log_file = 'log.txt'
 
-github = GithubCodeCollector('...')
+args = parser.parse_args()
+keyword = args.keyword[0]
+token = args.token[0]
 
-no_compile = True if '--no-compile' in sys.argv else False
+
+LOG_FILE = 'log.txt'
+
+github = GithubCodeCollector(token)    # 2fcfcb09697678fd8758a1e5b3a46af82877265d
 
 config = {
-    'no_compile': no_compile,
-    'compiler_path': compiler_path,
-    'kt_code_temp_file': kt_code_temp_file,
-    'log_file': log_file
+    'log_file': LOG_FILE,
+    'keyword': keyword
 }
+
+time_logger = TimeLogger()
 
 # code_search(github, config)
 code_by_repo_search(github, config)
+
+time_logger.finish('Code collection')

@@ -1,11 +1,11 @@
 import os
-import subprocess
 
-from github import Github, GithubException
+from github import Github, RateLimitExceededException, UnknownObjectException
 from pprint import pprint
 
 from lib.helpers.TimeLogger import TimeLogger
 from lib.helpers.ContentSaver import ContentSaver
+import time
 
 
 class GithubCodeCollector:
@@ -44,7 +44,7 @@ class GithubRepo:
 
 
 class GithubCodeFilesSet:
-    factor = 1000
+    factor = 100000     # factor for making unique part_number within all repos
 
     def __init__(self, codes, part_number):
         self.codes = codes
@@ -63,39 +63,26 @@ class GithubCodeFile:
     def __init__(self, code, file_number):
         self.obj = code
         self.number = file_number
-        self.filename = None
 
-    def write_file(self, filename=None, is_measure_time=True):
-        self.filename = filename
-        if is_measure_time:
-            time_logger = TimeLogger()
+    def write_file(self):
+        time_logger = TimeLogger()
 
         try:
             content = self.obj.decoded_content.decode('utf-8')
-        except GithubException:
-            print('404 error! File is skipped.')
+        except Exception as e:
+            pprint(e)
+            if isinstance(e, RateLimitExceededException):
+                print('File is skipped. Waiting for 1 minute.')
+                with open('rate_limit_exceeded_exceptions.log', 'a') as exceptions_descriptor:
+                    exceptions_descriptor.write(self.number + os.linesep)
+                time.sleep(60)
+                return self.write_file()
+            elif isinstance(e, UnknownObjectException):
+                print('File is skipped because not found.')
+                with open('unknown_object_exceptions.log', 'a') as exceptions_descriptor:
+                    exceptions_descriptor.write(self.number + os.linesep)
             return None
 
-        if filename is None:
-            ContentSaver.save(self.folder, self.number, content, ext='kt')
-        else:
-            f = open(filename, 'w')
-            f.write(content)
-            f.close()
+        path = ContentSaver.save(self.folder, self.number, content, ext='kt')
 
-        if is_measure_time:
-            return time_logger.finish()
-
-    def compile(self, compiler_path, is_measure_time=True):
-        if self.filename is None:
-            raise Exception('Not specified filename')
-
-        if is_measure_time:
-            time_logger = TimeLogger()
-        subprocess.call([compiler_path, self.filename])
-        if is_measure_time:
-            return time_logger.finish()
-
-    def remove_file(self):
-        if self.filename is not None:
-            os.remove(self.filename)
+        time_logger.finish('Write ' + path + ' (#' + str(self.number) + ') file')

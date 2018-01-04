@@ -20,3 +20,5 @@ class ContentSaver:
         f = open(dirname + '/' + basename, 'wb')
         f.write(content.encode('utf8'))
         f.close()
+
+        return dirname + '/' + basename
